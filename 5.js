@@ -37,7 +37,7 @@ function* computeSeat2(input){
       x = y = 0;
     } else if(chr === "L" || chr === "R"){
       x <<= 1;
-      if(chr == "R"){
+      if(chr === "R"){
         x |= 1;
       }
     } else if(chr === "F" || chr === "B"){
@@ -50,6 +50,22 @@ function* computeSeat2(input){
   return [x, y];
 }
 
+function* computeSeat3(input){
+  let seatId = 0;
+  for(const chr of input){
+    if(chr === "\n"){
+      yield seatId;
+      seatId = 0;
+    } else {
+      seatId <<= 1;
+      if(chr === "R" || chr === "B"){
+        seatId |= 1;
+      }
+    }
+  }
+  return seatId;
+}
+
 assert.deepEqual(computeSeat("BFFFBBFRRR").next().value, [7, 70])
 assert.deepEqual(computeSeat("FFFBBBFRRR").next().value, [7, 14])
 assert.deepEqual(computeSeat("BBFFBBFRLL").next().value, [4, 102])
@@ -58,16 +74,19 @@ assert.deepEqual(computeSeat2("BFFFBBFRRR").next().value, [7, 70])
 assert.deepEqual(computeSeat2("FFFBBBFRRR").next().value, [7, 14])
 assert.deepEqual(computeSeat2("BBFFBBFRLL").next().value, [4, 102])
 
+assert.deepEqual(computeSeat3("BFFFBBFRRR").next().value, 567)
+assert.deepEqual(computeSeat3("FFFBBBFRRR").next().value, 119)
+assert.deepEqual(computeSeat3("BBFFBBFRLL").next().value, 820)
+
 let maxId = 0;
-for(const seat of computeSeat2(input)){
-  maxId = Math.max(maxId, seat[0] + 8 * seat[1]);
+for(const seatId of computeSeat3(input)){
+  maxId = Math.max(maxId, seatId);
 }
 console.log("Part 1", maxId);
 
 const input2 = input.split("\n").sort().join("\n");
 let lastSeat = -1;
-for(const seat of computeSeat2(input2)){
-  let seatId = seat[1] * 8 + seat[0];
+for(const seatId of computeSeat3(input2)){
   if(lastSeat !== -1 && lastSeat === seatId - 2){
     console.log("Part 2", seatId - 1);
   }
