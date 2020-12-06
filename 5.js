@@ -25,7 +25,7 @@ function* computeSeat(input){
       yI /= 2;
     }
   }
-  return [x, y];
+  yield [x, y];
 }
 
 function* computeSeat2(input){
@@ -47,7 +47,7 @@ function* computeSeat2(input){
       }
     }
   }
-  return [x, y];
+  yield [x, y];
 }
 
 function* computeSeat3(input){
@@ -63,7 +63,7 @@ function* computeSeat3(input){
       }
     }
   }
-  return seatId;
+  yield seatId;
 }
 
 assert.deepEqual(computeSeat("BFFFBBFRRR").next().value, [7, 70])
