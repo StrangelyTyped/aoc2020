@@ -28,9 +28,17 @@ function part2(busList){
        constraints.push([i, idx]);
     }
   });
-  
-  console.log(constraints);
+ 
+  let step = 1;
+  let searchIdx = 1;
+  for(let constraint of constraints){
+    while((searchIdx + constraint[1]) % constraint[0] !== 0){
+      searchIdx += step;
+    }
+    step *= constraint[0];
+  }
+  return searchIdx;
 }
-assert.equal(part2(testInput.split("\n")[1]), 1068788);
-
+assert.equal(part2(testInput.split("\n")[1]), 1068781);
+console.log("Part 2", part2(input.split("\n")[1]));
 
